@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVault - Premium Entertainment</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">MVault ලෝඩ් වෙමින්...</div>
+    </div>
+
+    <!-- Auth Page -->
+    <div class="auth-page" id="authPage">
+        <div class="auth-container">
+            <div class="auth-logo">
+                <h1>MVault</h1>
+                <p>Premium Entertainment Experience</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                <button class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-form active" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="ඔබගේ email ඇතුළත් කරන්න">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="ඔබගේ password ඇතුළත් කරන්න">
+                    <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">
+                        <span class="material-icons">visibility</span>
+                    </button>
+                </div>
+                <button class="auth-btn" onclick="handleLogin()">
+                    <span class="material-icons">login</span>
+                    Login
+                </button>
+
+                <div class="auth-footer">
+                    මතකයේ නැතිද? <a href="#" onclick="showResetPassword()">Password reset කරන්න</a>
+                </div>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div class="auth-form" id="signupForm">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" id="signupName" placeholder="ඔබගේ සම්පූර්ණ නම">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="signupEmail" placeholder="ඔබගේ email ඇතුළත් කරන්න">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="signupPassword" placeholder="අවම වශයෙන් අකුරු 6ක්">
+                    <button type="button" class="password-toggle" onclick="togglePassword('signupPassword')">
+                        <span class="material-icons">visibility</span>
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" class="form-input" id="signupConfirm" placeholder="password නැවත ඇතුළත් කරන්න">
+                    <button type="button" class="password-toggle" onclick="togglePassword('signupConfirm')">
+                        <span class="material-icons">visibility</span>
+                    </button>
+                </div>
+                <button class="auth-btn" onclick="handleSignup()">
+                    <span class="material-icons">person_add</span>
+                    Create Account
+                </button>
+
+                <div class="auth-footer">
+                    දැනටමත් ගිණුමක් තිබේද? <a href="#" onclick="switchAuthTab('login')">Login වන්න</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="main-app" id="mainApp">
+        <!-- Navigation -->
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <a href="#" class="logo">MVault</a>
+                <div class="nav-tabs">
+                    <button class="nav-tab active" onclick="showPage('series')">TV Series</button>
+                    <button class="nav-tab" onclick="showPage('movies')">Movies</button>
+                    <button class="nav-tab" onclick="showPage('account')">Account</button>
+                    <button class="nav-tab" onclick="showPage('comments')">Comments</button>
+                </div>
+                <div class="user-menu">
+                    <div class="user-avatar" id="userAvatar" onclick="toggleUserMenu()">
+                        <span id="avatarText">U</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- TV Series Page -->
+        <div id="series" class="page active">
+            <div class="container">
+                <h1 class="section-title" style="text-align: center; margin-bottom: 3rem;">TV Series</h1>
+                <div class="content-grid" id="seriesGrid">
+                    <!-- Series will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Movies Page -->
+        <div id="movies" class="page">
+            <div class="container">
+                <h1 class="section-title" style="text-align: center; margin-bottom: 3rem;">Movies</h1>
+                <div class="content-grid" id="moviesGrid">
+                    <!-- Movies will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Page -->
+        <div id="account" class="page">
+            <div class="container">
+                <div class="account-header">
+                    <h1 class="section-title">My Account</h1>
+                    <div class="user-info-card">
+                        <div class="user-avatar-large" id="userAvatarLarge">
+                            <span id="avatarLargeText">U</span>
+                        </div>
+                        <div class="user-details">
+                            <h2 id="userDisplayName">User Name</h2>
+                            <p id="userEmail">user@example.com</p>
+                            <p class="member-since">Member since: <span id="memberSince">2024</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-sections">
+                    <div class="about-card">
+                        <h2>අපගේ අරමුණ</h2>
+                        <p>විදේශීය TV Series සහ Movies සිංහල උපසිරැසි හෝ සිංහල හඬකැවූ ආකාරයෙන් ලබා දීම අපගේ මුලික අරමුණයි. ඔබට ලොව පුරා ඇති විශිෂ්ටතම චිත්‍රපට සහ ටෙලි නාට්‍ය භාෂා බාධාවකින් තොරව භුක්ති විඳිය හැකිය.</p>
+                    </div>
+                    <div class="about-card">
+                        <h2>අප ගැන</h2>
+                        <p>MVault යනු 2025 සිට සේවාව සපයන ප්‍රිමියම් එන්ටර්ටේන්මන්ට් වෙබ් අඩවියකි. අපගේ කණ්ඩායම සමන්විත වන්නේ චිත්‍රපට කලාවට ආරක්තිකයන් වන පුද්ගලයන්ගෙනි.</p>
+                    </div>
+                    <div class="about-card">
+                        <h2>සේවාවන්</h2>
+                        <p>• 4K ගුණාත්මකභාවයෙන් යුත් චිත්‍රපට<br>
+                           • සිංහල උපසිරැසි සහ හඬකැවීම්<br>
+                           • බහු-උපාංග සහාය<br>
+                           • නිතිපතා යාවත්කාලීන කිරීම්</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comments Page -->
+        <div id="comments" class="page">
+            <div class="container">
+                <h1 class="section-title" style="text-align: center; margin-bottom: 3rem;">Community Comments</h1>
+                
+                <div class="comment-form-section">
+                    <div class="comment-form-card">
+                        <h3>ඔබගේ අදහස් එකතු කරන්න</h3>
+                        <div class="form-group">
+                            <textarea class="form-input" id="commentText" placeholder="ඔබගේ අදහස් මෙහි ඇතුළත් කරන්න..." rows="4"></textarea>
+                        </div>
+                        <button class="auth-btn" onclick="submitComment()">
+                            <span class="material-icons">send</span>
+                            Comment Submit කරන්න
+                        </button>
+                    </div>
+                </div>
+
+                <div class="comments-list" id="commentsList">
+                    <!-- Comments will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Modal -->
+    <div class="content-modal" id="contentModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeContentModal()">×</button>
+            <div class="modal-header" id="modalHeader">
+                <div class="modal-backdrop" id="modalBackdrop"></div>
+                <div class="modal-info">
+                    <h1 class="modal-title" id="modalTitle"></h1>
+                    <div class="modal-meta">
+                        <span id="modalYear"></span>
+                        <span id="modalGenre"></span>
+                        <span id="modalDuration"></span>
+                    </div>
+                    <div class="modal-ratings">
+                        <div class="rating-badge imdb">
+                            <span class="material-icons">star</span>
+                            <span id="modalImdb"></span>
+                        </div>
+                        <div class="rating-badge rotten">
+                            <span class="material-icons">local_florist</span>
+                            <span id="modalRotten"></span>
+                        </div>
+                    </div>
+                    <p class="modal-desc" id="modalDesc"></p>
+                    <div class="modal-actions">
+                        <button class="modal-btn primary" onclick="watchContent()">
+                            <span class="material-icons">play_arrow</span>
+                            Watch Now
+                        </button>
+                        <button class="modal-btn secondary" onclick="addToFavorites()">
+                            <span class="material-icons">favorite_border</span>
+                            Add to Favorites
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="seasons-section" id="seasonsSection" style="display: none;">
+                <h3 style="margin-bottom: 1.5rem;">Seasons & Episodes</h3>
+                <div class="season-tabs" id="seasonTabs">
+                    <!-- Season tabs will be loaded here -->
+                </div>
+                <div class="episodes-grid" id="episodesGrid">
+                    <!-- Episodes will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="comments.js"></script>
+    <script src="script.js"></script>
+</body>
+  </html>
