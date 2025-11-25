@@ -1,4 +1,4 @@
-// Firebase Configuration
+// firebase-config.js
 const firebaseConfig = {
     apiKey: "AIzaSyBorfzyBkRusslE5_ry4vFOlxQqjm_GpAM",
     authDomain: "nejk-dbfe3.firebaseapp.com",
@@ -10,11 +10,13 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+try {
+    firebase.initializeApp(firebaseConfig);
+    console.log("Firebase initialized successfully");
+} catch (error) {
+    console.error("Firebase initialization error:", error);
+}
 
-// Firebase services
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
-
-console.log("Firebase initialized successfully");
