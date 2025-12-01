@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVault Sinhala - Premium Streaming</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0c0c0c;
+            --secondary: #1a1a1a;
+            --accent: #e50914;
+            --accent-dark: #b2070f;
+            --highlight: #ff6b6b;
+            --text: #ffffff;
+            --text-secondary: #cccccc;
+            --text-muted: #999999;
+            --card-bg: #1f1f1f;
+            --card-hover: #2a2a2a;
+            --nav-height: 60px;
+            --section-padding: 40px 0;
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            --gradient: linear-gradient(135deg, #e50914 0%, #ff6b6b 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles - Compact Version */
+        header {
+            background-color: var(--primary);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 24px;
+            color: var(--accent);
+        }
+        
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        
+        .logo-text span {
+            color: var(--accent);
+        }
+        
+        /* Compact Navigation Styles */
+        .nav-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 2px;
+            background-color: var(--secondary);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .tab-button {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 15px;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        
+        .tab-button i {
+            font-size: 14px;
+        }
+        
+        .tab-button.active {
+            background: var(--gradient);
+        }
+        
+        .tab-button:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Main Content Styles */
+        main {
+            padding-top: 20px;
+            min-height: calc(100vh - 180px);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: var(--section-padding);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            max-width: 700px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1489599809505-7c8e1c75ce13?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 60px 0;
+            text-align: center;
+            border-radius: var(--border-radius);
+            margin-bottom: 40px;
+        }
+        
+        .hero-title {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 25px;
+        }
+        
+        .hero-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+        
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(229, 9, 20, 0.4);
+        }
+        
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .content-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        
+        .content-card:hover {
+            transform: translateY(-5px);
+            background-color: var(--card-hover);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .content-poster {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .content-info {
+            padding: 15px;
+        }
+        
+        .content-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+        
+        .content-type {
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .content-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--gradient);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        
+        /* About Us Page */
+        .about-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .about-section {
+            background-color: var(--secondary);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .about-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        .about-text {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .team-member {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .team-member:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+        
+        .member-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 3px solid var(--accent);
+        }
+        
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .member-avatar i {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient);
+            color: white;
+            font-size: 40px;
+        }
+        
+        .member-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .member-role {
+            color: var(--accent);
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        /* Password Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            background-color: var(--secondary);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            color: var(--accent);
+        }
+        
+        .modal-title {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .modal-subtitle {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+        
+        .content-preview {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--primary);
+            border: 2px solid var(--accent);
+            border-radius: var(--border-radius);
+            color: var(--text);
+            margin-bottom: 15px;
+            font-size: 15px;
+            transition: var(--transition);
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: var(--highlight);
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.3);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            flex: 1;
+            font-size: 15px;
+        }
+        
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: var(--card-bg);
+            color: var(--text);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .password-error {
+            color: var(--accent);
+            margin-top: 10px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background-color: var(--secondary);
+            padding: 40px 0 20px;
+            margin-top: 40px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+            transform: translateX(3px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background-color: var(--card-bg);
+            border-radius: 50%;
+            color: var(--text);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+        
+        .social-link:hover {
+            background: var(--gradient);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-tabs {
+                width: 100%;
+                overflow-x: auto;
+                justify-content: center;
+            }
+            
+            main {
+                margin-top: 0;
+            }
+            
+            .hero {
+                padding: 40px 0;
+            }
+            
+            .hero-title {
+                font-size: 28px;
+            }
+            
+            .hero-subtitle {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .content-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab-button {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+            
+            .content-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 15px;
+            }
+            
+            .content-poster {
+                height: 250px;
+            }
+            
+            .hero {
+                padding: 30px 0;
+            }
+            
+            .hero-title {
+                font-size: 24px;
+            }
+            
+            .hero-subtitle {
+                font-size: 14px;
+            }
+            
+            .section-title {
+                font-size: 22px;
+            }
+            
+            .about-section {
+                padding: 20px;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .member-avatar {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .content-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .logo-text {
+                font-size: 20px;
+            }
+            
+            .tab-button span {
+                display: none;
+            }
+            
+            .tab-button i {
+                font-size: 16px;
+            }
+            
+            .tab-button {
+                padding: 10px 15px;
+            }
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--secondary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-dark);
+        }
+        
+        /* Placeholder Images */
+        .placeholder-poster {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(45deg, #2a2a2a, #1a1a1a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            text-align: center;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Compact Navigation -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <div class="logo-text">M<span>Vault</span> Sinhala</div>
+                </a>
+                <div class="nav-container">
+                    <div class="nav-tabs">
+                        <button class="tab-button active" data-tab="home">
+                            <i class="fas fa-home"></i>
+                            <span>Main</span>
+                        </button>
+                        <button class="tab-button" data-tab="movies">
+                            <i class="fas fa-play-circle"></i>
+                            <span>Movies</span>
+                        </button>
+                        <button class="tab-button" data-tab="series">
+                            <i class="fas fa-tv"></i>
+                            <span>TV Series</span>
+                        </button>
+                        <button class="tab-button" data-tab="about">
+                            <i class="fas fa-info-circle"></i>
+                            <span>About</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Home Tab -->
+        <section id="home" class="tab-content active">
+            <div class="hero">
+                <h1 class="hero-title">MVault Sinhala</h1>
+                <p class="hero-subtitle">සිංහල හඬකවන ලද සහ උපසිරස ගන්වන ලද films, TV series එකතුව.</p>
+                <a href="#" class="hero-btn" data-tab="movies">
+                    <i class="fas fa-play"></i>
+                    Watch Now
+                </a>
+            </div>
+            
+            <h2 class="section-title">විශේෂ අන්තර්ගතය</h2>
+            <p class="section-subtitle">අපගේ ජනප්‍රියම චිත්‍රපට හා රූපවාහිනී කතාමාලා සිංහල උපසිරස සමග නරඹන්න</p>
+            <div class="content-grid">
+                <!-- Featured content will be dynamically added here -->
+            </div>
+        </section>
+
+        <!-- Movies Tab -->
+        <section id="movies" class="tab-content">
+            <h2 class="section-title">Movies</h2>
+            <p class="section-subtitle">විවිධ භාෂාවලින් ඇති films සිංහල උපසිරස සමග නරඹන්න</p>
+            <div class="content-grid">
+                <!-- Movies will be dynamically added here -->
+            </div>
+        </section>
+
+        <!-- Series Tab -->
+        <section id="series" class="tab-content">
+            <h2 class="section-title">TV Series</h2>
+            <p class="section-subtitle">විවිධ වර්ගයේ TV series සිංහල උපසිරස සමග හෝ සිංහල හඩකැවීම් සමග නරඹන්න</p>
+            <div class="content-grid">
+                <!-- Series will be dynamically added here -->
+            </div>
+        </section>
+
+        <!-- About Us Tab -->
+        <section id="about" class="tab-content">
+            <h2 class="section-title">About Us</h2>
+            <div class="about-container">
+                <div class="about-section">
+                    <h3 class="about-title">Our Mission</h3>
+                    <p class="about-text">
+                        At MVault Sinhala, our mission is to provide a premium streaming experience that brings the best of international and local content to Sri Lankan audiences. We strive to deliver high-quality entertainment that is accessible, diverse, and tailored to the unique preferences of our viewers.
+                    </p>
+                </div>
+                
+                <div class="about-section">
+                    <h3 class="about-title">Our Vision</h3>
+                    <p class="about-text">
+                        We envision a future where every Sri Lankan household has access to world-class entertainment that respects local culture while embracing global diversity. Through innovative technology and curated content, we aim to become the leading streaming platform in South Asia.
+                    </p>
+                </div>
+                
+                <div class="about-section">
+                    <h3 class="about-title">What We Offer</h3>
+                    <p class="about-text">
+                        MVault Sinhala offers an extensive library of movies and TV series across multiple genres and languages. From blockbuster Hollywood films to critically acclaimed international series and local Sinhala content, our platform provides something for everyone. Our user-friendly interface and personalized recommendations ensure you always find content you'll love.
+                    </p>
+                </div>
+                
+                <div class="about-section">
+                    <h3 class="about-title">Our Team</h3>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="member-avatar">
+                                <img src="https://drive.google.com/thumbnail?id=1Os-fd_NDvGkHq2h2xpnZpU0XAXTnuaHW&sz=w1000" 
+                                     alt="Navidu Dilhan" 
+                                     loading="lazy">
+                            </div>
+                            <h4 class="member-name">Navidu Dilhan</h4>
+                            <p class="member-role">CEO & Founder</p>
+                            <p class="about-text">Leading the vision and strategy of MVault Sinhala.</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-avatar">
+                                <img src="https://drive.google.com/thumbnail?id=1EEfQ2_ElNA8nhWy5rtp0FPJheT7U1cMw&sz=w1000" 
+                                     alt="දුලංජලී කෞශල්‍යයා" 
+                                     loading="lazy">
+                            </div>
+                            <h4 class="member-name">දුලංජලී කෞශල්‍යයා</h4>
+                            <p class="member-role">Content Viewer</p>
+                            <p class="about-text">Website එක බලන එක තමා වැඩේ ඉතින් 🤣.</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="member-avatar">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h4 class="member-name">Dilhan</h4>
+                            <p class="member-role">Technical Lead</p>
+                            <p class="about-text">Ensuring seamless streaming experience.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-section">
+                    <h3 class="about-title">Contact Information</h3>
+                    <p class="about-text">
+                        <strong>Email:</strong> mgrnavindudilhan@gmail.com<br>
+                        <strong>Website:</strong> MVault Sinhala<br>
+                        <strong>Year Established:</strong> 2025
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Password Modal -->
+    <div class="modal-overlay" id="passwordModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="modal-title" id="modalTitle">Enter Password</h3>
+            <p class="modal-subtitle" id="modalSubtitle">Mvault Sinhala youtube channel එක මගින් ලබා දුන් password එක මෙහි ඇතුලත් කරන්න.</p>
+            <div class="content-preview" id="contentPreview">
+                <!-- Preview image will be added here -->
+            </div>
+            <input type="password" class="password-input" id="passwordInput" placeholder="Enter password">
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                <button class="btn btn-primary" id="confirmBtn">Watch Now</button>
+            </div>
+            <p class="password-error" id="passwordError">password එක වැරදියි. video එක නරඹා නිවැරදි password එක ඇතුලත් කරන්න.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>MVault Sinhala</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 15px;">සිංහල උපසිරස සමග films, TV series නරඹන්න. Google Drive නැරඹිය හැක</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="#" data-tab="home">
+                                <i class="fas fa-home"></i>
+                                Main Page
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tab="movies">
+                                <i class="fas fa-play-circle"></i>
+                                Movies
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tab="series">
+                                <i class="fas fa-tv"></i>
+                                TV Series
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tab="about">
+                                <i class="fas fa-info-circle"></i>
+                                About Us
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            mgrnavindudilhan@gmail.com
+                        </li>
+                        <li>
+                            <i class="fas fa-globe"></i>
+                            MVault Sinhala
+                        </li>
+                        <li>
+                            <i class="fas fa-calendar-alt"></i>
+                            Year: 2025
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 MVault Sinhala. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Content Data with Individual Passwords
+        const contentData = {
+            movies: [
+                {
+                    id: 1,
+                    title: "The Roundup Punishment",
+                    type: "චිත්‍රපටය",
+                    poster: "https://drive.google.com/thumbnail?id=10XLmKcBY2kVFRB40FqnvibGkVwTmihrs&sz=w1000",
+                    video: "https://drive.google.com/file/d/1QzJhhuRsWO_YxKlY5C0eBLAX9szLmREo/view?usp=drivesdk",
+                    featured: true,
+                    password: "1234"
+                },
+                {
+                    id: 2,
+                    title: "The Gangster Crop of the Devil",
+                    type: "චිත්‍රපටය",
+                    poster: "https://drive.google.com/thumbnail?id=10cPiVOW9hbcL5VJLnEPTksKHmYJL8_my&sz=w1000",
+                    video: "https://drive.google.com/file/d/1FqxhZMgUGeeyidUhXMZ382_gBrgcrE2A/view?usp=drivesdk",
+                    featured: true,
+                    password: "1234"
+                },
+                {
+                    id: 3,
+                    title: "The Battle of Lake Changjin",
+                    type: "චිත්‍රපටය",
+                    poster: "https://drive.google.com/thumbnail?id=10_wUFJ_pj9iT56o6sucEc5CvVuWGpiRa&sz=w1000",
+                    video: "https://drive.google.com/file/d/1-6-byCxCoVCgnOzOn2eb_dl93xG2BW23/view?usp=drivesdk",
+                    featured: false,
+                    password: "1234"
+                },
+                { 
+                    id: 4,
+                    title: "The Battle of Jangsari",
+                    type: "චිත්‍රපටය",
+                    poster: "https://drive.google.com/thumbnail?id=1BKHCGBcvmgmGIq5b_qYWDq4LuuxfntS6&sz=w1000",
+                    video: "https://drive.google.com/file/d/1ttB-PEdn3fR552ZTFFbJsCzXkyt1rrOR/view?usp=drivesdk",
+                    featured: false,
+                    password: "1234"
+                }
+            ],
+            series: [
+                {
+                    id: 1,
+                    title: "Faith",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=11YJaU6dr-k-vtAh6qefuIdG6cf1VcXDW&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1bNu1Bd01PcXtGO6DAbjh5y85yWCtrLcj",
+                    featured: true,
+                    password: "1234"
+                },
+                {
+                    id: 2,
+                    title: "Hwarang",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=11YoXejxVsMbpp4M8J9uGzSpwPCay4WlC&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1UNnkWWNCVPc8hN-NnrP2Sf7ZGfkeKZJZ",
+                    featured: true,
+                    password: "1234"
+                },
+                {
+                    id: 3,
+                    title: "උරුමක්කාරයෝ",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=11N1bNl86wRwniNzgHH_Lnbek92bh8cTV&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1cj-8kXAh0cu35hFCCp8ARS2NlQbur_T0",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 4,
+                    title: "Legend of the Blue Sea",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=11N6zHRIAO_NoP8KJnJqKzo-tWgQPaFP_&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1NTqMOgmYs0JJHkItXdlSebtddDs0lPTC",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 5,
+                    title: "Legend of the Seeker",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=11RR-I_OXUNabTGInCwwbhxO3Ffpkndhd&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1CrO1b8MqwGf7WYi2zRsZlMpWYtK9LRcP",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 6,
+                    title: "හිමාන්තරා",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=11XAZlEa3RszGukOC14XUuORPynZC-EM7&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/10FHPoTxGR_4EXSlkvIoUxoY-WmHI4Auw",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 7,
+                    title: "Mouse",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=116M2KfHYYvEuPzCgkUaIs2VPtYBuR1RS&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1hN1PAa-535lo3Ozauzxq63Qs-496HvdB",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 8,
+                    title: "Judge from Hell",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=11F1RNeAY_AHs-VKj-i88iJTXmDdP1lZI&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/14Vqq3ewpkOyphcJwrW2D4L5zasudojLY",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 9,
+                    title: "The 8 show",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=10QXlmCHy0Nn2jvLt0TXwWbvX51QmXr4D&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1df7tRjxLgDkJqJdHxm8-ZvRUOWMDGeZ6",
+                    featured: true,
+                    password: "1234"
+                },
+                {
+                    id: 10,
+                    title: "Doctor Stranger",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=10PjZ3DoB0EEyUI0leiCNZdkvlECjSW4z&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1Uol26BJ8-pdigjQB7KtBfR6BYZYO4W4u",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 11,
+                    title: "Teen Wolf Session 1",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=11N_TPiucL4vVvk-qnPgC-xcUoFP1Dajf&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/13mcceOogAfQX8_APS5I9dJtMlbXUB0OW",
+                    featured: true,
+                    password: "1234"
+                },
+                {
+                    id: 12,
+                    title: "Teen Wolf Session 2",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=11N_TPiucL4vVvk-qnPgC-xcUoFP1Dajf&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1HR2j7QmVHigt7fKUF71hkzxd1DF1TcsZ",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 13,
+                    title: "Teen Wolf Session 3",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=11N_TPiucL4vVvk-qnPgC-xcUoFP1Dajf&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1Hek82JN_hpFYcNJT0JVWFZllqqFt4n9Z",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 14,
+                    title: "Teen Wolf Session 4",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=11N_TPiucL4vVvk-qnPgC-xcUoFP1Dajf&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/18npr_oMQ6nNGbih9PWXfrAElUusCpbFb",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 15,
+                    title: "Teen Wolf Session 5",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=11N_TPiucL4vVvk-qnPgC-xcUoFP1Dajf&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1bFpqUZ1YfG8d-nbQzKqunGbvvDmfTSjM",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 16,
+                    title: "Teen Wolf Session 6",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=11N_TPiucL4vVvk-qnPgC-xcUoFP1Dajf&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1Mtzi58lg1yoglcVB2M8SXiduwrHz8jjV",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 17,
+                    title: "See Session 1 & 2",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1AuY7Wk2B6TWQ9FxO5_uF8-c5CKs-QL1y&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1vr-9Qzm6yEC1-rTN3J2jiHwpUioXftZ3",
+                    featured: true,
+                    password: "1234"
+                },
+                {
+                    id: 18,
+                    title: "Goblin",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=11XN1RCWtK9G2yyplDk-aI4-cobdtctEs&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1fdL2_T8ockpLlPLjI1k_-kl6yxaaLR2d",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 19,
+                    title: "Vikings Session 1",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1ZAQuIpHVrWXjnmaaFefyAohnJdohtpt3&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1_coBvqou4Ite6XBxQCtgDtZFyx6LBab_",
+                    featured: true,
+                    password: "1234"
+                },
+                {
+                    id: 20,
+                    title: "Lucifer Session 1",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1NpeW9zNPUBP3-Fy87XqieqMYXE4j5Cef&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/18a5CYXrDd8lJRtllQOwigk815ZguB_aH",
+                    featured: true,
+                    password: "1234"
+                },
+                {
+                    id: 21,
+                    title: "Breaking Bad Session 1",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1NJFib7MsoMlIoIKhDL2Mr2028UcFs24D&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1XOK0aI_B9vEYlVssLNyg0UgYy8QIxaHT",
+                    featured: true,
+                    password: "1234"
+                },
+                {
+                    id: 22,
+                    title: "Lost Session 1",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1Xc3gVd_GY5KeEX_us2i5DOWYHcrVEo73&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1kr10Xie4_zpk4mdvYly45SZBUKXJWwSB",
+                    featured: true,
+                    password: "1234"
+                },
+                {
+                    id: 23,
+                    title: "Vikings Session 2",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1ZAQuIpHVrWXjnmaaFefyAohnJdohtpt3&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1WtPR4aKCyAdRPi-edwH3IrqzSzmpAj9O",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 24,
+                    title: "Vikings Session 3",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1ZAQuIpHVrWXjnmaaFefyAohnJdohtpt3&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1mE5SgmgydO5SnHUyR4RW99EmO98IkTb_",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 25,
+                    title: "Vikings Session 4-part 1",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1ZAQuIpHVrWXjnmaaFefyAohnJdohtpt3&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1CV4N8TlsAHwBg1gDkrJ_K8AQX_GXpIwc",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 26,
+                    title: "Vikings Session 4-part 2",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1ZAQuIpHVrWXjnmaaFefyAohnJdohtpt3&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1X3JtRpBpLSXHkvgfKCjFFtjzPDIZyzBU",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 27,
+                    title: "Vikings Session 5-part 1",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1ZAQuIpHVrWXjnmaaFefyAohnJdohtpt3&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/18I8gdbkZVtoi7p4FpUjWWk33QE6obedh",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 28,
+                    title: "Vikings Session 5-part 2",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1ZAQuIpHVrWXjnmaaFefyAohnJdohtpt3&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1iMeticreX45XTiaUnPoF9rkLKis5z5zg",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 29,
+                    title: "Breaking Bad Session 2",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1NJFib7MsoMlIoIKhDL2Mr2028UcFs24D&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1blw4rFaCHKAxi0cO8FWwqgqlQ6bFrL_6",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 30,
+                    title: "Breaking Bad Session 3",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1NJFib7MsoMlIoIKhDL2Mr2028UcFs24D&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1NMGGnBronNpzeRJ0CMqX9BkQ6HlWipm6",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 31,
+                    title: "Breaking Bad Session 4",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1NJFib7MsoMlIoIKhDL2Mr2028UcFs24D&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1_eS3nZBDaL0gRtcmMrjvV4NDMbdxEzrx",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 32,
+                    title: "Breaking Bad Session 5",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1NJFib7MsoMlIoIKhDL2Mr2028UcFs24D&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1SfYY1JlsR3Z5HKBE5FhWAk2YXB9Kvd33",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 33,
+                    title: "Lost Session 2",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1Xc3gVd_GY5KeEX_us2i5DOWYHcrVEo73&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1YolEAHFDYt5bJpHuc31j0yqsgSvVvuJY",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 34,
+                    title: "Lost Session 3",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1Xc3gVd_GY5KeEX_us2i5DOWYHcrVEo73&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1K2J6umueMchXEgo4l7os7zpM32-QZtKD",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 35,
+                    title: "Lost Session 4",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1Xc3gVd_GY5KeEX_us2i5DOWYHcrVEo73&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1cy3MkV7jfmYF0DFu8tKh_C_UWBzQ1ycp",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 36,
+                    title: "Lost Session 5",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1Xc3gVd_GY5KeEX_us2i5DOWYHcrVEo73&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1TFpGwVY7X4eyaGL-2Myw7CpfDTSYGXEU",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 37,
+                    title: "Lost Session 6",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1Xc3gVd_GY5KeEX_us2i5DOWYHcrVEo73&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/14eS4plX2IZLqvgtdylXEWq-8IuPtdB6c",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 38,
+                    title: "Peaky Blinders Session 1,2&3",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1c7Fc4OWMaOcvi5CZLcSX61KKW2cME_w6&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1G3kEgM5vE80aLTNawLLUTsIWNhbFGRUZ",
+                    featured: true,
+                    password: "1234"
+                },
+                {
+                    id: 39,
+                    title: "Peaky Blinders Session 4",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1c7Fc4OWMaOcvi5CZLcSX61KKW2cME_w6&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1WGYlKXff75QeCsPCzKijLOOKwnCLuOZd",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 40,
+                    title: "Peaky Blinders Session 5",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=1c7Fc4OWMaOcvi5CZLcSX61KKW2cME_w6&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1XVCx8WUbW9c941YXYOo2jNNwvSaebgnT",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 41,
+                    title: "Dark Session 1",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=15SmgSGbsTKkvEYlyQAvy8a8j0SEIExN1&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/17W62vJvJTofRDSsnHm-pUlTKglVHHJ5g",
+                    featured: true,
+                    password: "1234"
+                },
+                {
+                    id: 42,
+                    title: "Dark Session 2",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=15SmgSGbsTKkvEYlyQAvy8a8j0SEIExN1&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1qYae8FSfDOkrd02nxjb633Hb99kq1D7m",
+                    featured: false,
+                    password: "1234"
+                },
+                {
+                    id: 43,
+                    title: "Dark Session 3",
+                    type: "රූපවාහිනී කතාමාලාව",
+                    poster: "https://drive.google.com/thumbnail?id=15SmgSGbsTKkvEYlyQAvy8a8j0SEIExN1&sz=w1000",
+                    video: "https://drive.google.com/drive/folders/1zigquFtkxEHW4UV-B0r67RTEhnRwyAap",
+                    featured: false,
+                    password: "1234"
+                }
+            ]
+        };
+
+        // DOM Elements
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const passwordModal = document.getElementById('passwordModal');
+        const passwordInput = document.getElementById('passwordInput');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const modalClose = document.getElementById('modalClose');
+        const passwordError = document.getElementById('passwordError');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSubtitle = document.getElementById('modalSubtitle');
+        const contentPreview = document.getElementById('contentPreview');
+        const homeGrid = document.querySelector('#home .content-grid');
+        const moviesGrid = document.querySelector('#movies .content-grid');
+        const seriesGrid = document.querySelector('#series .content-grid');
+        const heroBtn = document.querySelector('.hero-btn');
+        
+        // Current content to play
+        let currentContent = null;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up tab navigation
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+            
+            // Set up footer links
+            document.querySelectorAll('.footer-links a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const tabId = link.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+            
+            // Set up hero button
+            heroBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchTab('movies');
+            });
+            
+            // Load featured content on home page
+            loadFeaturedContent();
+            
+            // Load movies
+            loadMovies();
+            
+            // Load series
+            loadSeries();
+            
+            // Set up password modal events
+            cancelBtn.addEventListener('click', closePasswordModal);
+            modalClose.addEventListener('click', closePasswordModal);
+            confirmBtn.addEventListener('click', checkPassword);
+            
+            // Close modal when clicking outside
+            passwordModal.addEventListener('click', (e) => {
+                if (e.target === passwordModal) {
+                    closePasswordModal();
+                }
+            });
+            
+            // Allow Enter key to submit password
+            passwordInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+        });
+
+        // Switch tabs
+        function switchTab(tabId) {
+            // Update active tab button
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.tab-button[data-tab="${tabId}"]`).classList.add('active');
+            
+            // Update active tab content
+            tabContents.forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Load featured content
+        function loadFeaturedContent() {
+            // Clear existing content
+            homeGrid.innerHTML = '';
+            
+            // Add featured movies
+            contentData.movies
+                .filter(movie => movie.featured)
+                .forEach(movie => {
+                    homeGrid.appendChild(createContentCard(movie));
+                });
+            
+            // Add featured series
+            contentData.series
+                .filter(series => series.featured)
+                .forEach(series => {
+                    homeGrid.appendChild(createContentCard(series));
+                });
+        }
+
+        // Load movies
+        function loadMovies() {
+            // Clear existing content
+            moviesGrid.innerHTML = '';
+            
+            // Add all movies
+            contentData.movies.forEach(movie => {
+                moviesGrid.appendChild(createContentCard(movie));
+            });
+        }
+
+        // Load series
+        function loadSeries() {
+            // Clear existing content
+            seriesGrid.innerHTML = '';
+            
+            // Add all series
+            contentData.series.forEach(series => {
+                seriesGrid.appendChild(createContentCard(series));
+            });
+        }
+
+        // Create content card
+        function createContentCard(content) {
+            const card = document.createElement('div');
+            card.className = 'content-card';
+            
+            // Create poster image or placeholder
+            let posterHTML;
+            if (content.poster && content.poster.startsWith('http')) {
+                posterHTML = `<img src="${content.poster}" alt="${content.title}" class="content-poster" loading="lazy">`;
+            } else {
+                posterHTML = `
+                    <div class="placeholder-poster">
+                        <div>
+                            <i class="fas fa-film" style="font-size: 40px; margin-bottom: 10px;"></i>
+                            <div>${content.title}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            card.innerHTML = `
+                ${posterHTML}
+                <div class="content-info">
+                    <h3 class="content-title">${content.title}</h3>
+                    <p class="content-type">${content.type}</p>
+                </div>
+                ${content.featured ? '<div class="content-badge">විශේෂ</div>' : ''}
+            `;
+            
+            card.addEventListener('click', () => {
+                openPasswordModal(content);
+            });
+            
+            return card;
+        }
+
+        // Open password modal
+        function openPasswordModal(content) {
+            currentContent = content;
+            passwordInput.value = '';
+            passwordError.style.display = 'none';
+            modalTitle.textContent = `Enter Password for ${content.title}`;
+            modalSubtitle.textContent = `Please enter the password to watch this ${content.type === 'චිත්‍රපටය' ? 'movie' : 'TV series'}`;
+            
+            // Set preview image
+            if (content.poster && content.poster.startsWith('http')) {
+                contentPreview.innerHTML = `<img src="${content.poster}" alt="${content.title}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--border-radius);" loading="lazy">`;
+            } else {
+                contentPreview.innerHTML = `
+                    <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(45deg, #2a2a2a, #1a1a1a);border-radius:var(--border-radius);color:var(--text-secondary);">
+                        <div style="text-align:center;">
+                            <i class="fas fa-film" style="font-size: 40px; margin-bottom: 10px;"></i>
+                            <div>${content.title}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            passwordModal.style.display = 'flex';
+            passwordInput.focus();
+        }
+
+        // Close password modal
+        function closePasswordModal() {
+            passwordModal.style.display = 'none';
+            currentContent = null;
+        }
+
+        // Check password
+        function checkPassword() {
+            if (passwordInput.value === currentContent.password) {
+                // Password is correct, redirect to content
+                window.open(currentContent.video, '_blank');
+                closePasswordModal();
+            } else {
+                // Password is incorrect
+                passwordError.style.display = 'block';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+    </script>
+</body>
+  </html>
