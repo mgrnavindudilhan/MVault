@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Mvault Sinhala | දත්ත ස්ථීරව සුරැකෙන පද්ධතිය</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0c10; color: #eef2ff; }
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+    .header { background: rgba(10, 12, 16, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 100; padding: 1rem 0; }
+    .nav-wrapper { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .logo h1 { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #e2b0ff, #9f7aea); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .logo span { font-size: 0.8rem; color: #a1a5b0; display: block; }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { color: #cfd9f2; text-decoration: none; font-weight: 600; transition: 0.2s; cursor: pointer; }
+    .nav-links a i { margin-right: 6px; }
+    .nav-links a:hover, .nav-links a.active { color: #c084fc; }
+    .admin-login-btn { background: rgba(192,132,252,0.15); border: 1px solid rgba(192,132,252,0.4); padding: 8px 18px; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .admin-login-btn:hover { background: #c084fc; color: #0a0c10; border-color: #c084fc; }
+    .hero { padding: 3rem 0 2rem; }
+    .hero h2 { font-size: 2.5rem; font-weight: 800; background: linear-gradient(to right, #ffffff, #c0b7e8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero p { color: #9ca3af; margin-top: 0.5rem; }
+    .content-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2rem; margin: 2rem 0 3rem; }
+    .movie-card { background: #111317; border-radius: 1.5rem; overflow: hidden; transition: transform 0.25s ease, box-shadow 0.3s; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
+    .movie-card:hover { transform: translateY(-6px); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.6); border-color: rgba(192,132,252,0.5); }
+    .card-poster { width: 100%; height: 320px; background: #1e1f2c; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .card-poster img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+    .movie-card:hover .card-poster img { transform: scale(1.03); }
+    .card-info { padding: 1rem; }
+    .card-info h3 { font-size: 1.2rem; font-weight: 700; }
+    .card-info p { color: #9ca3af; font-size: 0.85rem; margin-top: 5px; }
+    .year-badge { display: inline-block; background: #20222e; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; margin-top: 8px; }
+    .watch-btn { display: inline-block; margin-top: 12px; background: #c084fc; color: #0a0c10; padding: 6px 14px; border-radius: 30px; font-size: 0.8rem; font-weight: bold; }
+    .video-modal, .login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 2000; align-items: center; justify-content: center; }
+    .modal-container { background: #0f1119; width: 90%; max-width: 1000px; border-radius: 1.5rem; overflow: hidden; border: 1px solid #2a2e48; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; background: #0b0d14; border-bottom: 1px solid #232638; }
+    .close-modal { background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
+    .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
+    .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .admin-dashboard { display: none; background: #0e1018; padding: 2rem; border-radius: 2rem; margin: 2rem 0; border: 1px solid #292e42; }
+    .admin-form { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; background: #12141e; padding: 1.5rem; border-radius: 1.5rem; }
+    .admin-form input, .admin-form select { background: #1a1d2b; border: 1px solid #2e3440; padding: 10px; border-radius: 1rem; color: white; }
+    .btn { padding: 10px 20px; border-radius: 2rem; border: none; font-weight: 600; cursor: pointer; }
+    .btn-primary { background: #c084fc; color: #0a0c10; }
+    .btn-secondary { background: #2d2f3c; color: white; }
+    .delete-btn { background: #b91c1c; border: none; padding: 6px 12px; border-radius: 2rem; color: white; cursor: pointer; margin-left: 10px; }
+    .admin-item { background: #11131c; margin: 0.5rem 0; padding: 0.8rem; border-radius: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+    footer { text-align: center; padding: 2rem; color: #5a617a; border-top: 1px solid #1c1f2b; margin-top: 2rem; }
+    @media (max-width: 700px) { .container { padding: 0 1.2rem; } .nav-wrapper { flex-direction: column; } .nav-links { flex-wrap: wrap; justify-content: center; } }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="container nav-wrapper">
+    <div class="logo"><h1>Mvault Sinhala</h1><span>දත්ත ස්ථීරව සුරැකේ</span></div>
+    <div class="nav-links">
+      <a class="nav-movies active" data-page="movies"><i class="fas fa-film"></i> චිත්‍රපට</a>
+      <a class="nav-series" data-page="series"><i class="fas fa-tv"></i> ටීවී සීරීස්</a>
+      <button id="openAdminModalBtn" class="admin-login-btn"><i class="fas fa-user-shield"></i> පරිපාලක</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="hero"><h2>Mvault Sinhala Premium</h2><p>Admin විසින් එකතු කළ අන්තර්ගතයන් ස්ථීරව සුරැකේ. වෙබ් අඩවිය වසා විවෘත කළද දත්ත පවතී.</p></div>
+  <div id="contentArea" class="content-grid"></div>
+  <div id="adminDashboard" class="admin-dashboard">
+    <h3><i class="fas fa-crown"></i> Admin Panel - අන්තර්ගත කළමනාකරණය</h3>
+    <div class="admin-form">
+      <select id="contentTypeSelect"><option value="movie">චිත්‍රපටයක් (Movie)</option><option value="series">ටීවී සීරීස් (Series)</option></select>
+      <input type="text" id="itemTitle" placeholder="ශීර්ෂය (Title) *" required>
+      <input type="text" id="itemYear" placeholder="වසර (Year)">
+      <input type="text" id="itemGenre" placeholder="ප්‍රභේදය (Genre)">
+      <input type="text" id="itemPoster" placeholder="Poster Image URL (weserv හෝ direct link)">
+      <input type="text" id="itemVideoLink" placeholder="Google Drive Video Link *">
+      <button id="addItemBtn" class="btn btn-primary">➕ අයිතමය එකතු කරන්න</button>
+    </div>
+    <h4>📋 වත්මන් අන්තර්ගතය (ස්ථීරව සුරැකුණු)</h4>
+    <div id="adminItemsList"></div>
+    <button id="logoutAdminBtn" class="btn btn-secondary logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </div>
+</main>
+
+<!-- Login Modal -->
+<div id="loginModal" class="login-modal">
+  <div class="modal-container" style="max-width: 400px;">
+    <div class="modal-header"><h3><i class="fas fa-lock"></i> Admin Login</h3><button class="close-modal" id="closeLoginModalBtn">&times;</button></div>
+    <div style="padding: 1.5rem;">
+      <input type="text" id="loginUsername" placeholder="Username" style="width:100%; margin-bottom:1rem; padding:10px; border-radius:10px; background:#1a1d2b; border:1px solid #2e3440; color:white;">
+      <input type="password" id="loginPassword" placeholder="Password" style="width:100%; margin-bottom:1rem; padding:10px; border-radius:10px; background:#1a1d2b; border:1px solid #2e3440; color:white;">
+      <button id="submitLoginBtn" class="btn btn-primary" style="width:100%">Login</button>
+    </div>
+  </div>
+</div>
+
+<!-- Video Modal -->
+<div id="videoModal" class="video-modal"><div class="modal-container"><div class="modal-header"><h3>දැන් වාදනය වේ</h3><button class="close-modal" id="closeVideoModalBtn">&times;</button></div><div class="video-wrapper"><iframe id="videoIframe" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+
+<script>
+  // ---------- STORAGE KEYS ----------
+  const STORAGE_KEY = "mvault_permanent_data";
+
+  // ---------- GLOBAL DATA ----------
+  let movies = [];
+  let series = [];
+
+  // ---------- HELPER: Save to localStorage immediately ----------
+  function saveData() {
+    const dataToStore = {
+      movies: movies,
+      series: series
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToStore));
+    console.log("Data saved:", dataToStore); // for debugging
+  }
+
+  // ---------- Load from localStorage ----------
+  function loadData() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        movies = parsed.movies || [];
+        series = parsed.series || [];
+        console.log("Data loaded from storage:", { movies, series });
+        // If data exists, do NOT override with defaults
+        return;
+      } catch(e) { console.error("Parse error", e); }
+    }
+    
+    // ONLY if storage is empty, add default demo item (Boys Over Flowers Ep01)
+    if (movies.length === 0 && series.length === 0) {
+      series.push({
+        id: "bof_e01_default",
+        title: "Boys Over Flowers - කථාංගය 01",
+        year: "2025",
+        genre: "Romantic Comedy",
+        poster: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=11N6zHRIAO_NoP8KJnJqKzo-tWgQPaFP_&output=jpg",
+        videoUrl: "https://drive.google.com/file/d/19l4FFjLCyrkJbPGNCgeQrklJ7GDGAugo/preview"
+      });
+      saveData(); // save default item to storage
+    }
+  }
+
+  // Helper: convert Google Drive share link to embed link
+  function convertToEmbedLink(link) {
+    if (!link) return '';
+    if (link.includes('/preview')) return link;
+    const match = link.match(/\/d\/(.+?)\/(view|edit)/);
+    if (match && match[1]) {
+      return `https://drive.google.com/file/d/${match[1]}/preview`;
+    }
+    const idMatch = link.match(/id=([^&]+)/);
+    if (idMatch && idMatch[1]) return `https://drive.google.com/file/d/${idMatch[1]}/preview`;
+    return link;
+  }
+
+  function generateId(prefix) { return prefix + Date.now() + '-' + Math.floor(Math.random() * 10000); }
+
+  // UI State
+  let currentView = "movies";
+  let isAdminLoggedIn = false;
+
+  const contentArea = document.getElementById("contentArea");
+  const adminDashboard = document.getElementById("adminDashboard");
+  const loginModal = document.getElementById("loginModal");
+  const openModalBtn = document.getElementById("openAdminModalBtn");
+  const submitLoginBtn = document.getElementById("submitLoginBtn");
+  const logoutAdminBtn = document.getElementById("logoutAdminBtn");
+  const addItemBtn = document.getElementById("addItemBtn");
+  const adminItemsListDiv = document.getElementById("adminItemsList");
+  const videoModal = document.getElementById("videoModal");
+  const videoIframe = document.getElementById("videoIframe");
+
+  // Render frontend content
+  function renderContent() {
+    const dataList = currentView === "movies" ? movies : series;
+    if (!dataList.length) {
+      contentArea.innerHTML = `<div class="empty-msg" style="text-align:center; padding:3rem;">කිසිදු අයිතමයක් නොමැත. Admin පැනලයෙන් එකතු කරන්න.</div>`;
+      return;
+    }
+    let html = '';
+    dataList.forEach(item => {
+      html += `
+        <div class="movie-card" data-video="${item.videoUrl || ''}">
+          <div class="card-poster">
+            <img src="${item.poster || 'https://placehold.co/400x500?text=No+Poster'}" onerror="this.src='https://placehold.co/400x500?text=Error'">
+          </div>
+          <div class="card-info">
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>📅 ${item.year || 'N/A'} &nbsp;| ${item.genre || 'General'}</p>
+            <div class="watch-btn"><i class="fas fa-play"></i> Watch Now</div>
+          </div>
+        </div>
+      `;
+    });
+    contentArea.innerHTML = html;
+    document.querySelectorAll('.movie-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        const videoLink = card.getAttribute('data-video');
+        if (videoLink) {
+          videoIframe.src = videoLink;
+          videoModal.style.display = 'flex';
+        } else { alert("වීඩියෝ ලින්ක් එකක් නොමැත"); }
+      });
+    });
+  }
+
+  function renderAdminItems() {
+    if (!isAdminLoggedIn) return;
+    let combined = `<div><strong>🎬 චිත්‍රපට:</strong></div>`;
+    if(movies.length === 0) combined += `<div>මෙතෙක් movies නැත</div>`;
+    movies.forEach(m => {
+      combined += `<div class="admin-item"><div><i class="fas fa-film"></i> ${escapeHtml(m.title)} (${m.year})</div><button class="delete-btn" data-id="${m.id}" data-type="movie">මකන්න</button></div>`;
+    });
+    combined += `<div style="margin-top:1rem;"><strong>📺 සීරීස්:</strong></div>`;
+    if(series.length === 0) combined += `<div>මෙතෙක් series නැත</div>`;
+    series.forEach(s => {
+      combined += `<div class="admin-item"><div><i class="fas fa-tv"></i> ${escapeHtml(s.title)} (${s.year})</div><button class="delete-btn" data-id="${s.id}" data-type="series">මකන්න</button></div>`;
+    });
+    adminItemsListDiv.innerHTML = combined;
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = btn.getAttribute('data-id');
+        const type = btn.getAttribute('data-type');
+        if(type === 'movie') movies = movies.filter(m => m.id !== id);
+        else series = series.filter(s => s.id !== id);
+        saveData();        // immediately save after deletion
+        renderAdminItems();
+        renderContent();
+      });
+    });
+  }
+
+  function addItem() {
+    const type = document.getElementById("contentTypeSelect").value;
+    const title = document.getElementById("itemTitle").value.trim();
+    const year = document.getElementById("itemYear").value.trim();
+    const genre = document.getElementById("itemGenre").value.trim();
+    const poster = document.getElementById("itemPoster").value.trim();
+    let videoLink = document.getElementById("itemVideoLink").value.trim();
+    if (!title) { alert("ශීර්ෂය ඇතුළත් කරන්න"); return; }
+    if (!videoLink) { alert("Google Drive Video Link එක ඇතුළත් කරන්න"); return; }
+    const embedLink = convertToEmbedLink(videoLink);
+    const newItem = {
+      id: generateId(type === 'movie' ? 'm' : 's'),
+      title: title,
+      year: year || "2024",
+      genre: genre || "General",
+      poster: poster || "https://placehold.co/400x500?text=No+Image",
+      videoUrl: embedLink
+    };
+    if (type === 'movie') movies.push(newItem);
+    else series.push(newItem);
+    saveData();   // <-- CRITICAL: Save after adding
+    // clear fields
+    document.getElementById("itemTitle").value = '';
+    document.getElementById("itemYear").value = '';
+    document.getElementById("itemGenre").value = '';
+    document.getElementById("itemPoster").value = '';
+    document.getElementById("itemVideoLink").value = '';
+    renderAdminItems();
+    renderContent();
+    alert("අයිතමය ස්ථීරව සුරකින ලදී! පිටුව නැවත පූරණය කළද පවතී.");
+  }
+
+  function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+  // Admin Login
+  function attemptLogin() {
+    const user = document.getElementById("loginUsername").value;
+    const pass = document.getElementById("loginPassword").value;
+    if (user === "Navidudilhan@" && pass === "mgrn2005@#$%") {
+      isAdminLoggedIn = true;
+      loginModal.style.display = "none";
+      adminDashboard.style.display = "block";
+      renderAdminItems();
+    } else {
+      alert("Login name හෝ password වැරදියි. (Navidudilhan@ / mgrn2005@#$%)");
+    }
+  }
+  function logoutAdmin() {
+    isAdminLoggedIn = false;
+    adminDashboard.style.display = "none";
+  }
+  function closeVideoModal() { videoModal.style.display = "none"; videoIframe.src = ""; }
+
+  // Event Listeners
+  openModalBtn.addEventListener('click', () => { if(isAdminLoggedIn) { adminDashboard.style.display = "block"; renderAdminItems(); } else loginModal.style.display = "flex"; });
+  document.getElementById("closeLoginModalBtn").addEventListener('click', () => loginModal.style.display = "none");
+  document.getElementById("closeVideoModalBtn").addEventListener('click', closeVideoModal);
+  submitLoginBtn.addEventListener('click', attemptLogin);
+  logoutAdminBtn.addEventListener('click', logoutAdmin);
+  addItemBtn.addEventListener('click', addItem);
+  window.addEventListener('click', (e) => { if(e.target === loginModal) loginModal.style.display = "none"; if(e.target === videoModal) closeVideoModal(); });
+
+  document.querySelector('.nav-movies').addEventListener('click', (e) => {
+    e.preventDefault(); currentView = "movies"; document.querySelector('.nav-movies').classList.add('active'); document.querySelector('.nav-series').classList.remove('active'); renderContent();
+  });
+  document.querySelector('.nav-series').addEventListener('click', (e) => {
+    e.preventDefault(); currentView = "series"; document.querySelector('.nav-series').classList.add('active'); document.querySelector('.nav-movies').classList.remove('active'); renderContent();
+  });
+
+  // Initialize
+  loadData();     // loads from localStorage (if any)
+  renderContent();
+  console.log("Initialized with data:", { movies, series });
+</script>
+</body>
+  </html>
