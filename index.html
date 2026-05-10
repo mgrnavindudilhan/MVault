@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mvault Sinhala</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#0f172a;
+color:white;
+}
+
+h1{text-align:center}
+
+.container{
+padding:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+gap:20px;
+}
+
+.card{
+background:#1e293b;
+padding:15px;
+border-radius:15px;
+}
+
+.card img{
+width:100%;
+height:300px;
+object-fit:cover;
+border-radius:10px;
+}
+
+button{
+padding:10px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+background:#a855f7;
+color:white;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:5px 0;
+border-radius:10px;
+border:none;
+}
+
+.admin{
+background:#111827;
+padding:15px;
+border-radius:15px;
+margin-bottom:20px;
+display:none;
+}
+</style>
+
+</head>
+<body>
+
+<h1>Mvault Sinhala</h1>
+
+<div class="container">
+
+<!-- ADMIN LOGIN -->
+<div id="loginBox">
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin" id="adminPanel">
+
+<h3>Admin Panel</h3>
+
+<input id="title" placeholder="Title">
+<input id="year" placeholder="Year">
+<input id="poster" placeholder="Poster URL">
+<input id="video" placeholder="Video URL">
+
+<button onclick="addMovie()">Add Movie</button>
+
+</div>
+
+<!-- MOVIES -->
+<div class="grid" id="movies"></div>
+
+</div>
+
+<script>
+
+const username = "YOUR_USERNAME";
+const repo = "mvault-sinhala";
+const token = "YOUR_GITHUB_TOKEN";
+
+let logged = false;
+
+function login(){
+
+let u=document.getElementById("user").value;
+let p=document.getElementById("pass").value;
+
+if(u==="admin" && p==="1234"){
+logged=true;
+document.getElementById("adminPanel").style.display="block";
+alert("Logged in");
+}else{
+alert("Wrong login");
+}
+
+}
+
+async function loadMovies(){
+
+let res=await fetch(
+`https://raw.githubusercontent.com/${username}/${repo}/main/movies.json`
+);
+
+let data=await res.json();
+
+let box=document.getElementById("movies");
+box.innerHTML="";
+
+data.forEach(m=>{
+
+box.innerHTML+=`
+
+<div class="card">
+
+<img src="${m.poster}">
+
+<h3>${m.title}</h3>
+<p>${m.year}</p>
+
+<a href="${m.video}" target="_blank">
+<button>Watch</button>
+</a>
+
+</div>
+
+`;
+
+});
+
+}
+
+async function addMovie(){
+
+let title=document.getElementById("title").value;
+let year=document.getElementById("year").value;
+let poster=document.getElementById("poster").value;
+let video=document.getElementById("video").value;
+
+let url=`https://api.github.com/repos/${username}/${repo}/contents/movies.json`;
+
+let file=await fetch(url,{
+headers:{
+Authorization:`token ${token}`
+}
+});
+
+let json=await file.json();
+
+let content=JSON.parse(atob(json.content));
+
+content.push({title,year,poster,video});
+
+let updated=btoa(JSON.stringify(content,null,2));
+
+await fetch(url,{
+method:"PUT",
+headers:{
+Authorization:`token ${token}`,
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+message:"add movie",
+content:updated,
+sha:json.sha
+})
+});
+
+alert("Added!");
+
+loadMovies();
+
+}
+
+loadMovies();
+
+</script>
+
+</body>
+</html>
