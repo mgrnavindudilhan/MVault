@@ -1,1 +1,12 @@
-[]
+{
+  "series": [
+    {
+      "id": "bof1",
+      "title": "Boys Over Flowers - Ep 01",
+      "year": "2025",
+      "genre": "Romance, Drama",
+      "poster": "https://images.weserv.nl/?url=https://drive.google.com/uc?id=11N6zHRIAO_NoP8KJnJqKzo-tWgQPaFP_&output=jpg",
+      "videoUrl": "https://drive.google.com/file/d/19l4FFjLCyrkJbPGNCgeQrklJ7GDGAugo/preview"
+    }
+  ]
+}
