@@ -1,1 +1,13 @@
-[]
+
+{
+  "movies": [
+    {
+      "id": "movie1",
+      "title": "නිදසුන චිත්‍රපටය",
+      "year": "2024",
+      "genre": "Action",
+      "poster": "https://placehold.co/400x500?text=Movie+Poster",
+      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    }
+  ]
+}
