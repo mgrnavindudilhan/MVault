@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Mvault Sinhala | Movies & Series</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0c10; color: #eef2ff; }
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+    .header { background: rgba(10,12,16,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 100; padding: 1rem 0; }
+    .nav-wrapper { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .logo h1 { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #e2b0ff, #9f7aea); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .nav-links a { color: #cfd9f2; text-decoration: none; font-weight: 600; margin: 0 1rem; cursor: pointer; }
+    .nav-links a.active { color: #c084fc; }
+    .admin-btn { background: rgba(192,132,252,0.2); padding: 6px 14px; border-radius: 40px; border: 1px solid #c084fc; cursor: pointer; }
+    .hero { padding: 3rem 0 1rem; }
+    .hero h2 { font-size: 2.5rem; background: linear-gradient(to right, #fff, #c0b7e8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .content-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2rem; margin: 2rem 0; }
+    .movie-card { background: #111317; border-radius: 1.5rem; overflow: hidden; cursor: pointer; transition: 0.25s; border: 1px solid rgba(255,255,255,0.05); }
+    .movie-card:hover { transform: translateY(-6px); border-color: #c084fc; }
+    .card-poster img { width: 100%; height: 320px; object-fit: cover; }
+    .card-info { padding: 1rem; }
+    .watch-btn { background: #c084fc; color: #0a0c10; padding: 6px 12px; border-radius: 30px; display: inline-block; margin-top: 10px; font-size: 0.8rem; font-weight: bold; }
+    .video-modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 2000; align-items: center; justify-content: center; }
+    .modal-container { background: #0f1119; width: 90%; max-width: 1000px; border-radius: 1.5rem; overflow: hidden; border: 1px solid #2a2e48; }
+    .modal-header { display: flex; justify-content: space-between; padding: 1rem 1.5rem; background: #0b0d14; border-bottom: 1px solid #232638; }
+    .close-modal { background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
+    .video-wrapper iframe { width: 100%; height: 450px; border: none; }
+    .admin-panel { display: none; background: #0e1018; padding: 2rem; border-radius: 2rem; margin: 2rem 0; border: 1px solid #292e42; }
+    .admin-form { display: flex; flex-direction: column; gap: 0.8rem; margin: 1.5rem 0; background: #12141e; padding: 1.5rem; border-radius: 1.5rem; }
+    .admin-form input, .admin-form select { background: #1a1d2b; border: 1px solid #2e3440; padding: 10px; border-radius: 1rem; color: white; width: 100%; }
+    .btn { padding: 10px 20px; border-radius: 2rem; border: none; cursor: pointer; font-weight: 600; }
+    .btn-primary { background: #c084fc; color: #0a0c10; }
+    .btn-secondary { background: #2d2f3c; color: white; }
+    .delete-btn { background: #b91c1c; color: white; padding: 4px 12px; border-radius: 20px; border: none; cursor: pointer; margin-left: 10px; }
+    .admin-item { background: #11131c; padding: 10px; margin: 5px 0; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+    footer { text-align: center; padding: 2rem; color: #5a617a; border-top: 1px solid #1c1f2b; margin-top: 2rem; }
+    @media (max-width:700px){ .container { padding: 0 1rem; } .video-wrapper iframe { height: 250px; } }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="container nav-wrapper">
+    <div class="logo"><h1>Mvault Sinhala</h1></div>
+    <div class="nav-links">
+      <a class="nav-movies active" data-type="movies">🎬 චිත්‍රපට</a>
+      <a class="nav-series" data-type="series">📺 ටීවී සීරීස්</a>
+      <button id="openAdminBtn" class="admin-btn"><i class="fas fa-user-shield"></i> Admin</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="hero"><h2>🌍 GitHub Cloud වෙතින් සජීවී දත්ත</h2></div>
+  <div id="contentArea" class="content-grid">📡 දත්ත පූරණය වේ...</div>
+  
+  <!-- Admin Panel -->
+  <div id="adminPanel" class="admin-panel">
+    <h3><i class="fas fa-crown"></i> Admin Panel - අන්තර්ගත කළමනාකරණය</h3>
+    <div class="admin-form">
+      <select id="itemType">
+        <option value="movies">🎬 චිත්‍රපටයක් (Movie)</option>
+        <option value="series">📺 ටීවී සීරීස් (Series)</option>
+      </select>
+      <input type="text" id="itemTitle" placeholder="ශීර්ෂය (Title) *">
+      <input type="text" id="itemYear" placeholder="වසර (Year)">
+      <input type="text" id="itemGenre" placeholder="ප්‍රභේදය (Genre)">
+      <input type="text" id="itemPoster" placeholder="Poster Image URL">
+      <input type="text" id="itemVideo" placeholder="Video URL (Google Drive / YouTube embed)">
+      <button id="addBtn" class="btn btn-primary">➕ අයිතමය එකතු කරන්න</button>
+    </div>
+    <h4>📋 වත්මන් අන්තර්ගතය</h4>
+    <div id="adminList"></div>
+    <button id="logoutAdmin" class="btn btn-secondary" style="margin-top:1rem;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </div>
+</main>
+
+<!-- Video Modal -->
+<div id="videoModal" class="video-modal">
+  <div class="modal-container">
+    <div class="modal-header"><h3><i class="fas fa-play-circle"></i> දැන් වාදනය වේ</h3><button class="close-modal">&times;</button></div>
+    <div class="video-wrapper"><iframe id="videoIframe" allow="autoplay; fullscreen" allowfullscreen></iframe></div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 Mvault Sinhala | දත්ත GitHub Cloud මත සුරැකේ | <i class="fab fa-github"></i> mgrnavindudilhan/MVault</p>
+</footer>
+
+<script>
+  // =====================================================
+  // 🔐 ඔබගේ GitHub තොරතුරු (මෙහි සම්පූර්ණයෙන්ම update කර ඇත)
+  // =====================================================
+  const GITHUB_USERNAME = "mgrnavindudilhan";
+  const REPO_NAME = "MVault";
+  const GITHUB_TOKEN = "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";  // ⚠️ Token එක මෙහි ඇත
+  
+  // RAW URLs (කියවීමට)
+  const MOVIES_RAW_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/main/movies.json`;
+  const SERIES_RAW_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/main/series.json`;
+  
+  // API URLs (ලිවීමට - Token අවශ්‍යයි)
+  const MOVIES_API_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/movies.json`;
+  const SERIES_API_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/series.json`;
+  
+  // ==================== ගෝලීය විචල්‍ය ====================
+  let moviesData = { movies: [] };
+  let seriesData = { series: [] };
+  let currentType = "movies";
+  let isAdmin = false;
+  
+  const contentArea = document.getElementById("contentArea");
+  const adminPanel = document.getElementById("adminPanel");
+  const videoModal = document.getElementById("videoModal");
+  const videoIframe = document.getElementById("videoIframe");
+  
+  // ==================== දත්ත කියවීම (Token අවශ්‍ය නැත) ====================
+  async function fetchJSON(url, defaultValue) {
+    try {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn(`Fetch error for ${url}:`, err);
+      return defaultValue;
+    }
+  }
+  
+  async function loadAllData() {
+    try {
+      contentArea.innerHTML = "<div style='text-align:center'><i class='fas fa-spinner fa-pulse fa-2x'></i><br>📡 GitHub Cloud වෙතින් දත්ත ලබා ගැනේ...</div>";
+      const [moviesRes, seriesRes] = await Promise.all([
+        fetchJSON(MOVIES_RAW_URL, { movies: [] }),
+        fetchJSON(SERIES_RAW_URL, { series: [] })
+      ]);
+      moviesData = moviesRes;
+      seriesData = seriesRes;
+      renderContent();
+      if (isAdmin) renderAdminList();
+    } catch (err) {
+      contentArea.innerHTML = `<div style="text-align:center; color:#f87171; padding:2rem;">❌ දත්ත ලබා ගැනීම අසාර්ථකයි<br><small>${err.message}</small></div>`;
+    }
+  }
+  
+  // ==================== ප්‍රදර්ශනය ====================
+  function renderContent() {
+    const items = currentType === "movies" ? (moviesData.movies || []) : (seriesData.series || []);
+    if (!items.length) {
+      contentArea.innerHTML = `<div style="text-align:center; padding:3rem;">📭 කිසිදු අයිතමයක් නොමැත.<br>Admin පැනලයෙන් එකතු කරන්න.</div>`;
+      return;
+    }
+    let html = '';
+    items.forEach(item => {
+      html += `
+        <div class="movie-card" data-video="${escapeAttr(item.videoUrl || '')}">
+          <div class="card-poster"><img src="${escapeAttr(item.poster || 'https://placehold.co/400x500?text=No+Image')}" onerror="this.src='https://placehold.co/400x500'"></div>
+          <div class="card-info">
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>📅 ${escapeHtml(item.year || 'N/A')} | ${escapeHtml(item.genre || 'General')}</p>
+            <div class="watch-btn"><i class="fas fa-play"></i> Watch Now</div>
+          </div>
+        </div>
+      `;
+    });
+    contentArea.innerHTML = html;
+    document.querySelectorAll('.movie-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const vlink = card.getAttribute('data-video');
+        if (vlink && vlink.trim()) {
+          videoIframe.src = vlink;
+          videoModal.style.display = 'flex';
+        } else {
+          alert("⚠️ වීඩියෝ ලින්ක් එකක් මෙම අයිතමය සඳහා නොමැත");
+        }
+      });
+    });
+  }
+  
+  // ==================== GitHub වෙත ලිවීම (Token භාවිතා කරයි) ====================
+  async function updateGitHubFile(apiUrl, content) {
+    if (!GITHUB_TOKEN) throw new Error("Token එකක් නැත");
+    
+    // පළමුව current file එකේ SHA එක ලබා ගන්න
+    let sha = "";
+    try {
+      const getRes = await fetch(apiUrl, {
+        headers: { Authorization: `token ${GITHUB_TOKEN}` }
+      });
+      if (getRes.ok) {
+        const data = await getRes.json();
+        sha = data.sha;
+      }
+    } catch(e) { console.warn("SHA fetch error:", e); }
+    
+    const contentString = JSON.stringify(content, null, 2);
+    const body = {
+      message: `Update ${apiUrl.includes("movies") ? "movies.json" : "series.json"} from Mvault Admin`,
+      content: btoa(unescape(encodeURIComponent(contentString))),
+      sha: sha || undefined
+    };
+    
+    const putRes = await fetch(apiUrl, {
+      method: "PUT",
+      headers: {
+        Authorization: `token ${GITHUB_TOKEN}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+    
+    if (!putRes.ok) {
+      const errText = await putRes.text();
+      throw new Error(`HTTP ${putRes.status}: ${errText}`);
+    }
+    return true;
+  }
+  
+  async function addItem() {
+    if (!isAdmin) { alert("Admin login වන්න"); return; }
+    
+    const type = document.getElementById("itemType").value;
+    const newItem = {
+      id: Date.now().toString(),
+      title: document.getElementById("itemTitle").value.trim(),
+      year: document.getElementById("itemYear").value.trim(),
+      genre: document.getElementById("itemGenre").value.trim(),
+      poster: document.getElementById("itemPoster").value.trim(),
+      videoUrl: document.getElementById("itemVideo").value.trim()
+    };
+    
+    if (!newItem.title) { alert("ශීර්ෂයක් ඇතුළත් කරන්න"); return; }
+    
+    try {
+      if (type === "movies") {
+        moviesData.movies.push(newItem);
+        await updateGitHubFile(MOVIES_API_URL, moviesData);
+      } else {
+        seriesData.series.push(newItem);
+        await updateGitHubFile(SERIES_API_URL, seriesData);
+      }
+      alert("✅ සාර්ථකව එකතු විය! පිටුව Refresh වෙමින්...");
+      // clear form
+      document.getElementById("itemTitle").value = "";
+      document.getElementById("itemYear").value = "";
+      document.getElementById("itemGenre").value = "";
+      document.getElementById("itemPoster").value = "";
+      document.getElementById("itemVideo").value = "";
+      await loadAllData();
+      if (isAdmin) renderAdminList();
+    } catch (err) {
+      alert("❌ දෝෂයක්: " + err.message);
+    }
+  }
+  
+  async function deleteItem(type, id) {
+    if (!confirm("මෙම අයිතමය ස්ථිරවම මකා දමන්නද?")) return;
+    try {
+      if (type === "movies") {
+        moviesData.movies = moviesData.movies.filter(m => m.id !== id);
+        await updateGitHubFile(MOVIES_API_URL, moviesData);
+      } else {
+        seriesData.series = seriesData.series.filter(s => s.id !== id);
+        await updateGitHubFile(SERIES_API_URL, seriesData);
+      }
+      alert("✅ මකා දමන ලදී");
+      await loadAllData();
+      if (isAdmin) renderAdminList();
+    } catch (err) {
+      alert("❌ දෝෂයක්: " + err.message);
+    }
+  }
+  
+  function renderAdminList() {
+    let html = `<div style="margin-bottom:1rem;"><strong>🎬 චිත්‍රපට (${(moviesData.movies || []).length})</strong></div>`;
+    (moviesData.movies || []).forEach(m => {
+      html += `<div class="admin-item"><span><i class="fas fa-film"></i> ${escapeHtml(m.title)} (${escapeHtml(m.year || 'N/A')})</span><button class="delete-btn" data-type="movies" data-id="${m.id}">මකන්න</button></div>`;
+    });
+    html += `<div style="margin:1rem 0 0.5rem;"><strong>📺 ටීවී සීරීස් (${(seriesData.series || []).length})</strong></div>`;
+    (seriesData.series || []).forEach(s => {
+      html += `<div class="admin-item"><span><i class="fas fa-tv"></i> ${escapeHtml(s.title)} (${escapeHtml(s.year || 'N/A')})</span><button class="delete-btn" data-type="series" data-id="${s.id}">මකන්න</button></div>`;
+    });
+    document.getElementById("adminList").innerHTML = html;
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.onclick = () => deleteItem(btn.dataset.type, btn.dataset.id);
+    });
+  }
+  
+  // ==================== Admin Login ====================
+  function showAdminLogin() {
+    isAdmin = true;
+    adminPanel.style.display = "block";
+    renderAdminList();
+  }
+  
+  document.getElementById("openAdminBtn").onclick = () => {
+    if (adminPanel.style.display === "block") {
+      adminPanel.style.display = "none";
+    } else {
+      showAdminLogin();
+    }
+  };
+  document.getElementById("logoutAdmin").onclick = () => {
+    isAdmin = false;
+    adminPanel.style.display = "none";
+  };
+  document.getElementById("addBtn").onclick = addItem;
+  
+  // Navigation
+  document.querySelector(".nav-movies").onclick = () => {
+    currentType = "movies";
+    document.querySelector(".nav-movies").classList.add("active");
+    document.querySelector(".nav-series").classList.remove("active");
+    renderContent();
+  };
+  document.querySelector(".nav-series").onclick = () => {
+    currentType = "series";
+    document.querySelector(".nav-series").classList.add("active");
+    document.querySelector(".nav-movies").classList.remove("active");
+    renderContent();
+  };
+  
+  // Modal close
+  document.querySelector(".close-modal").onclick = () => {
+    videoModal.style.display = "none";
+    videoIframe.src = "";
+  };
+  window.onclick = (e) => {
+    if (e.target === videoModal) {
+      videoModal.style.display = "none";
+      videoIframe.src = "";
+    }
+  };
+  
+  function escapeHtml(str) { return String(str || "").replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
+  function escapeAttr(str) { return String(str || "").replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  
+  // Start
+  loadAllData();
+</script>
+</body>
+  </html>
